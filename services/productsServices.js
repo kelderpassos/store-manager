@@ -1,11 +1,23 @@
 const productsModels = require('../models/productsModels');
 
 const productsServices = {
+  // validateId: (id) => {
+  //   const productById = productsModels.findById(id);
+
+  //   // if (!productById) {
+  //   //   return 
+  //   // }
+  // },
+
   getAll: async () => {
-    await productsModels.getAll();
+    const products = await productsModels.getAll();
+    return products;
   },
+
   findById: async (id) => {
-    await productsModels.findById(id);
+    const productById = await productsModels.findById(id);
+    
+    return productById;
   },
 };
 
