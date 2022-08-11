@@ -43,5 +43,21 @@ describe('Get products from database', () => {
     })
   });
 
-  
+  describe('Create a new product', () => {
+    const mock = { name: 'Fuzil do Justiceiro' };
+    const mockExecute = [{ insertId: 1 }];
+
+    before(async () => {
+      sinon.stub(connection, "execute").resolves(mockExecute);
+    });
+
+    after(async () => {
+      connection.execute.restore();
+    });
+
+    it('should increase the quantity of ids', async () => {
+      const execution = await productsModels.createProduct(mock);
+      expect(execution).to.have.a.property('id');
+    });
+  });
 });
