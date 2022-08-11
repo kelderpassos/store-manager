@@ -9,9 +9,15 @@ const productsModels = {
   findById: async (id) => {
     const query = 'SELECT * FROM StoreManager.products WHERE id=?;';
     const [[queryResult]] = await connection.query(query, [id]);
-    console.log(queryResult);
 
     return queryResult;
+  },
+
+  createProduct: async (productName) => {
+    const command = 'INSERT INTO StoreManager.products (name) VALUES (?)';
+    const [commandResult] = await connection.execute(command, [productName]);
+     
+    return { id: commandResult.insertId, name: productName };
   },
 };
 
