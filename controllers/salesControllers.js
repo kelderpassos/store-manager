@@ -8,7 +8,7 @@ const salesControllers = {
     return res.status(201).json(newSales);
   },
 
-  findById: async (req, res) => {
+  findById: async () => {
     // const { id } = req.params;
     // const productById = await productsServices.findById(id);
 

@@ -1,10 +1,8 @@
-const connection = require('./connection');
+// const connection = require('./connection');
 
 const salesModels = {
-  createSales: async (sales) => {
+  createSales: async () => {
     // console.log(sales);
-    
-
 
     // const command = 'INSERT INTO StoreManager.sales_products (product_id, quantity) VALUES (?, ?)';
     // const [commandResult] = await connection.execute(command, [
