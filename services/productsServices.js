@@ -7,13 +7,24 @@ const productsServices = {
   },
 
   findById: async (id) => {
-    const productById = await productsModels.findById(id);    
+    const productById = await productsModels.findById(id);
     return productById;
   },
 
   createProduct: async (productName) => {
     const newProduct = await productsModels.createProduct(productName);
     return newProduct;
+  },
+
+  updateProduct: async (newInfo, id) => {
+    console.log(newInfo);
+    const productUpdated = await productsModels.updateProduct(newInfo, id);
+
+    if (!productUpdated) {
+      return null;
+    }
+
+    return productUpdated;
   },
 };
 

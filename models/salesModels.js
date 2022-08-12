@@ -1,14 +1,22 @@
-// const connection = require('./connection');
+const connection = require('./connection');
 
-// const salesModels = {
-//   createSales: async (newSales) => {
-//     const command = 'INSERT INTO StoreManager.sales_products (name) VALUES (?)';
-//     const [commandResult] = await connection.execute(command, [newSales]);
+const salesModels = {
+  createSales: async (sales) => {
+    // console.log(sales);
+    
 
-//     console.log();
 
-//     return { id: commandResult.insertId, name: productName };
-//   },
-// };
+    // const command = 'INSERT INTO StoreManager.sales_products (product_id, quantity) VALUES (?, ?)';
+    // const [commandResult] = await connection.execute(command, [
+    //   productId,
+    //   quantity,
+    // ]);
 
-// module.exports = salesModels;
+    // console.log(commandResult);
+
+    // // return { id: commandResult.insertId, name: productName };
+    // return commandResult;
+  },
+};
+
+module.exports = salesModels;

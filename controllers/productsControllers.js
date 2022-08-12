@@ -23,6 +23,14 @@ const productsControllers = {
 
     return res.status(201).json(newProduct);
   },
+
+  updateProduct: async (req, res) => {
+    const { name } = req.body;
+    const { id } = req.params;
+    const productUpdated = await productsServices.updateProduct(name, id);
+
+    return res.status(200).json(productUpdated);
+  },
 };
 
 module.exports = productsControllers;
