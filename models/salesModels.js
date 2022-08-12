@@ -18,6 +18,20 @@ const salesModels = {
     // // return { id: commandResult.insertId, name: productName };
     return { id: createDate.insertId, itemsSold: sales };
   },
+
+  getEverySale: async () => {
+    const query = 'SELECT * from StoreManager.sales_products';
+    const [allProducts] = await connection.execute(query);
+    return allProducts;
+  },
+
+  getAll: async () => {
+    const query = 'SELECT sale_id AS saleId,  FROM StoreManager.sales;';
+    const [allSales] = await connection.execute(query);
+    console.log(allSales);
+
+    return 'teste';
+  },
 };
 
 module.exports = salesModels;

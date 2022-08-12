@@ -4,8 +4,8 @@ const validations = require('../middlewares/salesMiddleware');
 
 const sales = Router();
 
-sales.get('/', salesControllers.createSale);
-sales.get('/:id', salesControllers.findById);
+sales.get('/', salesControllers.getAll);
+// sales.get('/:id', salesControllers.findById);
 sales.post('/',
   validations.isProductIdValid,
   validations.isProductQuantityValid,
