@@ -1,19 +1,22 @@
-// const connection = require('./connection');
+const connection = require('./connection');
 
 const salesModels = {
-  createSales: async () => {
-    // console.log(sales);
+  createSales: async (sales) => {    
+    const queryDate = 'INSERT INTO StoreManager.sales (date) VALUES (NOW())';
+    const queryProductSale = `INSERT INTO StoreManager.sales_products 
+    (sale_id, product_id, quantity) 
+    VALUES (?, ?, ?);`;
 
-    // const command = 'INSERT INTO StoreManager.sales_products (product_id, quantity) VALUES (?, ?)';
-    // const [commandResult] = await connection.execute(command, [
-    //   productId,
-    //   quantity,
-    // ]);
-
-    // console.log(commandResult);
+    const [createDate] = await connection.execute(queryDate);
+    
+    sales.forEach(async (sale) => {
+      await connection.execute(queryProductSale, [
+        createDate.insertId, sale.productId, sale.quantity,
+      ]);
+    });
 
     // // return { id: commandResult.insertId, name: productName };
-    // return commandResult;
+    return { id: createDate.insertId, itemsSold: sales };
   },
 };
 

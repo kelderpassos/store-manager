@@ -3,8 +3,13 @@ const salesServices = require('../services/salesServices');
 const salesControllers = {
   createSale: async (req, res) => {
     const { body } = req;
-    const newSales = await salesServices.createSales(body);
 
+    // const teste = body.map((sales) => {
+      
+    //   return { id: sales.productId, quantity: sales.quantity }
+    // });
+    // console.log(teste);
+    const newSales = await salesServices.createSales(body);
     return res.status(201).json(newSales);
   },
 
