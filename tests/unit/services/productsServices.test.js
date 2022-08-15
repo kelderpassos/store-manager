@@ -3,7 +3,7 @@ const { expect } = require("chai");
 const connection = require("../../../models/connection");
 const productsServices = require('../../../services/productsServices');
 
-describe("Get products from database", () => {
+describe("Get and manipulate products from database", () => {
   describe("Get every product from database", () => {
     const mock = [
       [
@@ -51,6 +51,23 @@ describe("Get products from database", () => {
       sinon.stub(connection, "execute").resolves(mockExecute);
       const execution = await productsServices.createProduct(mock);
       expect(execution).to.have.a.property("id");
+    });
+  });
+
+  describe('Update the info of a product', () => {
+    beforeEach(async () => {
+      sinon.restore();
+    });
+
+    const mock = [
+      { id: 1, name: "Martelo de Thor" },
+      { id: 2, name: "Traje de encolhimento" },
+      { id: 3, name: "Escudo do Capitão América" },
+    ];
+
+    it('should return an empty array', async () => {
+      sinon.stub(connection, 'execute').resolves(mock);
+      
     });
   });
 });

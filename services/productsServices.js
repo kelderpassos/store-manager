@@ -17,10 +17,9 @@ const productsServices = {
   },
 
   updateProduct: async (newInfo, id) => {
-    const everyProduct = await productsModels.getAll();
-    const existingProduct = everyProduct.filter((product) => product.id === Number(id));
+    const productById = await productsModels.findById(id);
 
-    if (existingProduct.length < 1) {
+    if (!productById) {
       return { message: 'Product not found' };
     }
 
@@ -29,10 +28,9 @@ const productsServices = {
   },
 
   deleteById: async (id) => {
-    const everyProduct = await productsModels.getAll();
-    const existingProduct = everyProduct.filter((product) => product.id === Number(id));
+    const productById = await productsModels.findById(id);
    
-    if (existingProduct.length < 1) {
+    if (!productById) {
       return { message: 'Product not found' };
     }
 

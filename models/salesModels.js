@@ -43,12 +43,7 @@ const salesModels = {
   },
 
   checkIfExists: async (id) => {
-    const query = `SELECT s.date AS date,
-    sp.product_id AS productId, sp.quantity AS quantity 
-    FROM StoreManager.sales AS s, StoreManager.sales_products AS sp
-    WHERE s.id = ? `;
-
-    const [saleById] = await connection.execute(query, [id]);
+    const saleById = await salesModels.findById(id);
     if (saleById.length === 0) throw new Error('Product not found');
   },
 };

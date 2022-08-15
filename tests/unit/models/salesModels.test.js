@@ -1,7 +1,11 @@
 const sinon = require("sinon");
-const { expect } = require("chai");
+const chai = require("chai");
+const chaiAsPromised = require("chai-as-promised");
 const connection = require("../../../models/connection");
 const salesModels = require("../../../models/salesModels");
+
+const expect = chai.expect;
+chai.use(chaiAsPromised);
 
 describe('Create new sales', () => {
   beforeEach(async () => {
@@ -10,10 +14,9 @@ describe('Create new sales', () => {
 
   describe('Check if an id exists', () => {
     it('should return an empty array', async () => {
-      sinon.stub(connection, 'execute').resolves([]);
-      const response = await salesModels.checkIfExists(99);
-      console.log(response);
-      expect(response.length).to.be.equal(0);
+      sinon.stub(connection, 'execute').resolves([[]]);
+
+      await expect(salesModels.checkIfExists(99)).to.be.rejectedWith("Product not found");
     });
   });
 

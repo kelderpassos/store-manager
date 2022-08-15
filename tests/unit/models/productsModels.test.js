@@ -61,20 +61,38 @@ describe('Get and manipulate products from database', () => {
     });
   });
 
-  describe('update a product info', () => {
-    const mock = { affectedRows: 1 };
+  describe('Update a product info', () => {
+    const mock = [{ affectedRows: 1 }];
     const update = { id: 1, name: 'Fuzil do Justiceiro' };
 
     before(async () => {
-      sinon.stub(connection, "execute").resolves(mock);
+      sinon.stub(connection, "execute").resolves();
     });
 
     after(async () => {
       connection.execute.restore();
     });
 
-    it('should return the new info', () => {
-
+    it('should contain property "name"', async () => {
+      const result = await productsModels.updateProduct(update.name, update.id)
+      expect(result).to.have.property('name');
     });
   })
+
+  describe('Delete a product from database', () => {
+    const mock = [{ id: 3, name: "Escudo do Capitão América" }];
+
+    before(async () => {
+      sinon.stub(connection, "execute").resolves();
+    });
+
+    after(async () => {
+      connection.execute.restore();
+    });
+    
+    it('should delete a product', async () => {      
+      const result =  await productsModels.deleteById(3);
+      expect(result).to.be.equal(undefined);
+    });
+  });
 });
