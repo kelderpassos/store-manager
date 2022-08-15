@@ -29,7 +29,7 @@ const productsModels = {
 
   deleteById: async (id) => {
     const command = 'DELETE FROM StoreManager.products WHERE id = ?;';
-    await connection.execute(command, [id]);
+    return connection.execute(command, [id]);
   },
 };
 
