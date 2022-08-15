@@ -16,17 +16,13 @@ const productsModels = {
   createProduct: async (productName) => {
     const command = 'INSERT INTO StoreManager.products (name) VALUES (?)';
     const [commandResult] = await connection.execute(command, [productName]);
-
-    console.log();
-
+    
     return { id: commandResult.insertId, name: productName };
   },
 
   updateProduct: async (productName, id) => {
     const command = 'UPDATE StoreManager.products SET name = ? WHERE id = ?';
     await connection.execute(command, [productName, id]);
-
-    console.log(productName);
 
     return { id, name: productName };
   },

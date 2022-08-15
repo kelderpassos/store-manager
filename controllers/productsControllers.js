@@ -27,8 +27,12 @@ const productsControllers = {
   updateProduct: async (req, res) => {
     const { name } = req.body;
     const { id } = req.params;
-    const productUpdated = await productsServices.updateProduct(name, id);
 
+    const productUpdated = await productsServices.updateProduct(name, id);
+    
+    if (productUpdated.message === 'Product not found') {
+      return res.status(404).json({ message: 'Product not found' });
+    }
     return res.status(200).json(productUpdated);
   },
 };

@@ -17,13 +17,14 @@ const productsServices = {
   },
 
   updateProduct: async (newInfo, id) => {
-    console.log(newInfo);
-    const productUpdated = await productsModels.updateProduct(newInfo, id);
+    const everyProduct = await productsModels.getAll();
+    const existingProduct = everyProduct.filter((product) => product.id === Number(id));
 
-    if (!productUpdated) {
-      return null;
+    if (existingProduct.length < 1) {
+      return { message: 'Product not found' };
     }
 
+    const productUpdated = await productsModels.updateProduct(newInfo, id);
     return productUpdated;
   },
 };
