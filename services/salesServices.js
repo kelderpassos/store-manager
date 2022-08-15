@@ -12,14 +12,15 @@ const productsServices = {
   getEverySale: async () => {
     const everySale = await salesModels.getEverySale();
     if (everySale === null) {
-      return { code: 400, message: 'Sale not found' };
+      return { code: 404, message: 'Sale not found' };
     }
 
     return everySale;
   },
 
   findById: async (id) => {
-    await salesModels.findById(id);
+    const teste = await salesModels.findById(id);
+    return teste;
   },
 };
 

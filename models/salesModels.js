@@ -34,11 +34,11 @@ const salesModels = {
   findById: async (id) => {
     const query = `SELECT s.date AS date,
     sp.product_id AS productId, sp.quantity AS quantity 
-    FROM StoreManager.sales AS s, StoreManager.sales_products AS sp
-    WHERE s.id = ? `;
+    FROM StoreManager.sales_products AS sp
+    INNER JOIN StoreManager.sales AS s ON sp.sale_id = s.id
+    WHERE sp.sale_id = ?`;
 
-    const [saleById] = await connection.execute(query, [id]);
-    // console.log(saleById);
+    const [saleById] = await connection.execute(query, [id]);    
     return saleById;
   },
 
@@ -49,7 +49,6 @@ const salesModels = {
     WHERE s.id = ? `;
 
     const [saleById] = await connection.execute(query, [id]);
-    // console.log(saleById);
     if (saleById.length === 0) throw new Error('Product not found');
   },
 };
