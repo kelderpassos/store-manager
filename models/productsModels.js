@@ -16,7 +16,7 @@ const productsModels = {
   createProduct: async (productName) => {
     const command = 'INSERT INTO StoreManager.products (name) VALUES (?)';
     const [commandResult] = await connection.execute(command, [productName]);
-    
+
     return { id: commandResult.insertId, name: productName };
   },
 
@@ -25,6 +25,11 @@ const productsModels = {
     await connection.execute(command, [productName, id]);
 
     return { id, name: productName };
+  },
+
+  deleteById: async (id) => {
+    const command = 'DELETE FROM StoreManager.products WHERE id = ?;';
+    await connection.execute(command, [id]);
   },
 };
 

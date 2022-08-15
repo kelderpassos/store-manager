@@ -8,5 +8,6 @@ products.get('/', productsControllers.getAll);
 products.get('/:id', productsControllers.findById);
 products.post('/', validations.isNameFieldValid, productsControllers.createProduct);
 products.put('/:id', validations.isNameFieldValid, productsControllers.updateProduct);
+products.delete('/:id', productsControllers.deleteById);
 
 module.exports = products;

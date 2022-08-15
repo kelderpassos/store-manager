@@ -27,6 +27,17 @@ const productsServices = {
     const productUpdated = await productsModels.updateProduct(newInfo, id);
     return productUpdated;
   },
+
+  deleteById: async (id) => {
+    const everyProduct = await productsModels.getAll();
+    const existingProduct = everyProduct.filter((product) => product.id === Number(id));
+   
+    if (existingProduct.length < 1) {
+      return { message: 'Product not found' };
+    }
+
+    return productsModels.deleteById(id);
+  },
 };
 
 module.exports = productsServices;

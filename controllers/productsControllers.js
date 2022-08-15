@@ -1,5 +1,7 @@
 const productsServices = require('../services/productsServices');
 
+const PRODUCT_NOT_FOUND = 'Product not found';
+
 const productsControllers = {
   getAll: async (_req, res) => {
     const products = await productsServices.getAll();
@@ -11,7 +13,7 @@ const productsControllers = {
     const productById = await productsServices.findById(id);
 
     if (!productById) {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({ message: PRODUCT_NOT_FOUND });
     }
 
     return res.status(200).json(productById);
@@ -29,11 +31,23 @@ const productsControllers = {
     const { id } = req.params;
 
     const productUpdated = await productsServices.updateProduct(name, id);
-    
-    if (productUpdated.message === 'Product not found') {
-      return res.status(404).json({ message: 'Product not found' });
+
+    if (productUpdated.message === PRODUCT_NOT_FOUND) {
+      return res.status(404).json({ message: PRODUCT_NOT_FOUND });
     }
     return res.status(200).json(productUpdated);
+  },
+
+  deleteById: async (req, res) => {
+    const { id } = req.params;
+
+    const isDeleted = await productsServices.deleteById(id);
+    
+    if (isDeleted.message === PRODUCT_NOT_FOUND) {
+      return res.status(404).json({ message: PRODUCT_NOT_FOUND });
+    }
+      
+    return res.status(204).json();
   },
 };
 
