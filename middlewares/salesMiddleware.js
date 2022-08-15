@@ -13,8 +13,8 @@ const validations = {
   isProductQuantityValid: (req, res, next) => {
     const { body } = req;
 
-    const quantityExists = body.every((sale) => sale.quantity);
-    if (!quantityExists) {
+    const quantityExists = body.every((sale) => typeof sale.quantity === 'undefined');
+    if (quantityExists) {
       return res.status(400).json({ message: '"quantity" is required' });
     }
 
@@ -27,14 +27,12 @@ const validations = {
 
     next();
   },
-  // isProductQuantityOverZero: (req, res, next) => {
-  //   const { body } = req;
-  //   const validAmount = body.every((sale) => sale.quantity >= 1);
-  //   if (!validAmount) {
-  //     return res
-  //       .status(422)
-  //       .json({ message: '"quantity" must be greater than or equal to 1' });
-  //   }
+
+  // doesSaleExist: (req, res, next) => {
+  //   console.log(res);
+  //   // if (condition) {
+      
+  //   // }
 
   //   next();
   // },

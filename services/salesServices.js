@@ -2,20 +2,25 @@ const salesModels = require('../models/salesModels');
 
 const productsServices = {
   createSales: async (sales) => {
-    const allProducts = await salesModels.getEverySale();
+    await Promise
+      .all(sales.map(({ productId }) => salesModels.checkIfExists(productId)));
 
-    const ids = sales.map((sale) => sale.productId);
-    const existingIds = allProducts
-      .some(({ productId }) => ids.includes(productId));
-    if (!existingIds) {
-      return { code: 404, errorMessage: 'Product not found' };
-    }
-
-    const newProduct = await salesModels.createSales(sales);    
+    const newProduct = await salesModels.createSale(sales);
     return newProduct;
   },
 
-  getAll: async () => salesModels.getAll(),
+  getEverySale: async () => {
+    const everySale = await salesModels.getEverySale();
+    if (everySale === null) {
+      return { code: 400, message: 'Sale not found' };
+    }
+
+    return everySale;
+  },
+
+  findById: async (id) => {
+    await salesModels.findById(id);
+  },
 };
 
 module.exports = productsServices;

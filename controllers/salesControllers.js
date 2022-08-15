@@ -5,27 +5,25 @@ const salesControllers = {
     const { body } = req;
     const newSales = await salesServices.createSales(body);
 
-    if (newSales.errorMessage !== undefined) {
-      return res.status(newSales.code).json({ message: newSales.errorMessage });
-    }
-
     return res.status(201).json(newSales);
   },
 
-  getAll: async () => {
-    await salesServices.getAll();
+  getEverySale: async (_req, res) => {
+    const everySale = await salesServices.getEverySale();
+    
+    if (!everySale) {
+      return res.status(everySale.code).json(everySale.message);
+    }
+
+    return res.status(200).json(everySale);
   },
 
-  // findById: async () => {
-  //   // const { id } = req.params;
-  //   // const productById = await productsServices.findById(id);
+  findById: async (req, res) => {
+    const { id } = req.params;
+    const saleById = await salesServices.findById(id);
 
-  //   // if (!productById) {
-  //   //   return res.status(404).json({ message: "Product not found" });
-  //   // }
-
-  //   // return res.status(200).json(productById);
-  // },
+    return res.status(200).json(saleById);
+  },
 };
 
 module.exports = salesControllers;
