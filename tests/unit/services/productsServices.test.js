@@ -59,15 +59,12 @@ describe("Get and manipulate products from database", () => {
       sinon.restore();
     });
 
-    const mock = [
-      { id: 1, name: "Martelo de Thor" },
-      { id: 2, name: "Traje de encolhimento" },
-      { id: 3, name: "Escudo do Capitão América" },
-    ];
+    const mock = [{ id: 3, name: "Escudo do Capitão América" }];
 
-    it('should return an empty array', async () => {
-      sinon.stub(connection, 'execute').resolves(mock);
-      
+    it('should return an empty array', async () => { // falso negativo
+      sinon.stub(connection, 'execute').resolves();
+      const execution = await productsServices.findById(999);
+      expect(execution).to.equal(undefined);
     });
   });
 });

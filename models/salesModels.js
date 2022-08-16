@@ -2,7 +2,7 @@ const connection = require('./connection');
 
 const salesModels = {
   createSale: async (sales) => {
-    const queryDate = 'INSERT INTO StoreManager.sales (date) VALUES (NOW())'; 
+    const queryDate = 'INSERT INTO StoreManager.sales (date) VALUES (NOW())';
     const queryProductSale = `INSERT INTO StoreManager.sales_products 
     (sale_id, product_id, quantity) 
     VALUES (?, ?, ?);`;
@@ -15,7 +15,7 @@ const salesModels = {
         sale.quantity,
       ]);
     });
-    
+
     return { id: insertId, itemsSold: sales };
   },
 
@@ -24,7 +24,7 @@ const salesModels = {
     sp.product_id AS productId, sp.quantity AS quantity 
     FROM StoreManager.sales AS s, StoreManager.sales_products AS sp
     WHERE s.id = sp.sale_id `;
-    
+
     const [allProducts] = await connection.execute(query);
     if (allProducts === undefined) return null;
 
@@ -38,9 +38,19 @@ const salesModels = {
     INNER JOIN StoreManager.sales AS s ON sp.sale_id = s.id
     WHERE sp.sale_id = ?`;
 
-    const [saleById] = await connection.execute(query, [id]);    
+    const [saleById] = await connection.execute(query, [id]);
     return saleById;
   },
+
+  deleteById: async (id) => {
+    const commandSales = 'DELETE FROM StoreManager.sales WHERE id = ?;';
+
+    const [{ affectedRows }] = await connection.execute(commandSales, [id]);
+
+    return !!affectedRows;
+  },
+
+  updateSale: async () => {},
 
   checkIfExists: async (id) => {
     const saleById = await salesModels.findById(id);

@@ -2,8 +2,9 @@ const salesModels = require('../models/salesModels');
 
 const productsServices = {
   createSales: async (sales) => {
-    await Promise
-      .all(sales.map(({ productId }) => salesModels.checkIfExists(productId)));
+    await Promise.all(
+      sales.map(({ productId }) => salesModels.checkIfExists(productId)),
+    );
 
     const newProduct = await salesModels.createSale(sales);
     return newProduct;
@@ -22,6 +23,17 @@ const productsServices = {
     const teste = await salesModels.findById(id);
     return teste;
   },
+  deleteById: async (id) => {
+    const deletedSale = await salesModels.deleteById(id);
+  
+    if (!deletedSale) {
+      return null;
+    }
+
+    return deletedSale;
+  },
+
+  updateSale: async () => {},
 };
 
 module.exports = productsServices;
