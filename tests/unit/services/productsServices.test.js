@@ -71,7 +71,6 @@ describe("Get and manipulate products from database", () => {
     it('should return a product', async () => {
       sinon.stub(connection, 'execute').resolves(mock);
       const execution = await productsServices.updateProduct(mock.name, 3);
-      // console.log(execution);
       expect(execution).to.have.property('name');
       expect(execution).to.be.equal(mock);
     });
