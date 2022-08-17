@@ -72,7 +72,7 @@ describe("Get and manipulate products from database", () => {
       sinon.stub(connection, 'execute').resolves(mock);
       const execution = await productsServices.updateProduct(mock.name, 3);
       expect(execution).to.have.property('name');
-      expect(execution).to.be.equal(mock);
+      expect(execution).to.be.eql(mock);
     });
   });
 
