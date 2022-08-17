@@ -37,8 +37,7 @@ const productsServices = {
     return productsModels.deleteById(id);
   },
 
-  searchByTerm: async (term) => {    
-    console.log('teste services');
+  searchByTerm: async (term) => {
     const productByTerm = await productsModels.searchByTerm(term);
     return productByTerm;
   },

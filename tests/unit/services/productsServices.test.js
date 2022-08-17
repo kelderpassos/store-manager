@@ -58,13 +58,64 @@ describe("Get and manipulate products from database", () => {
     beforeEach(async () => {
       sinon.restore();
     });
+    
+    const mock = { id: 3, name: "Fuzil do Capitão América" };
 
-    const mock = [{ id: 3, name: "Escudo do Capitão América" }];
-
-    it('should return an empty array', async () => { // falso negativo
+    it('should return an error message', async () => {
       sinon.stub(connection, 'execute').resolves();
-      const execution = await productsServices.findById(999);
-      expect(execution).to.equal(undefined);
+      const execution = await productsServices.updateProduct('Fuzil', 999);
+      expect(execution).to.have.property('message');
+      expect(execution.message).to.equal('Product not found');
+    });
+
+    // it('should return a product', async () => {
+    //   sinon.stub(connection, 'execute').resolves(mock);
+    //   const execution = await productsServices.updateProduct(mock.name, 3);
+    //   // console.log(execution);
+    //   expect(execution).to.have.property('name');
+    //   expect(execution).to.be.equal(mock);
+    // });
+  });
+
+  describe('Delete a product from database', () => {
+    beforeEach(async () => {
+      sinon.restore();
+    });
+
+    it('should return an error message', async () => {
+      sinon.stub(connection, 'execute').resolves();
+      const result = await productsServices.deleteById(999);
+      expect(result.message).to.be.equal('Product not found');
+    });
+
+    it('should delete a product from database', async () => {
+      sinon.stub(connection, 'execute').resolves();
+      const result = await productsServices.deleteById(3);
+      expect(result).to.be.equal(undefined);
     });
   });
+
+  // describe('Find a product by search term', () => {
+  //   beforeEach(async () => {
+  //     sinon.restore();
+  //   });
+
+  //   const mock = [
+  //     {
+  //       id: 2,
+  //       name: "Traje de encolhimento",
+  //     },
+  //     {
+  //       id: 3,
+  //       name: "Escudo do Capitão América",
+  //     },
+  //   ];
+
+  //   it('should return products with the searched term', async () => {
+  //     sinon.stub(connection, 'execute').resolves(mock);
+  //     const result = await productsServices.searchByTerm('me');
+  //     // console.log(result);
+  //     expect(result).to.be.equal(mock);
+  //   })
+  // });
 });

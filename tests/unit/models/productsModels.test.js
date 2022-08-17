@@ -80,8 +80,6 @@ describe('Get and manipulate products from database', () => {
   })
 
   describe('Delete a product from database', () => {
-    const mock = [{ id: 3, name: "Escudo do Capitão América" }];
-
     before(async () => {
       sinon.stub(connection, "execute").resolves();
     });
@@ -90,9 +88,67 @@ describe('Get and manipulate products from database', () => {
       connection.execute.restore();
     });
     
-    it('should delete a product', async () => {      
-      const result =  await productsModels.deleteById(3);
+    it("should delete a product from database", async () => {
+      const result = await productsModels.deleteById(3);
       expect(result).to.be.equal(undefined);
+    });
+  });
+
+  describe('Find a product by a search term', () => {
+    // // beforeEach(async () => {
+    // //   sinon.restore();
+    // // });
+
+    // const mock = [
+    //   {
+    //     id: 2,
+    //     name: "Traje de encolhimento",
+    //   },
+    //   {
+    //     id: 3,
+    //     name: "Escudo do Capitão América",
+    //   },
+    // ];
+
+    // before(async () => {
+    //   sinon.stub(connection, "execute").resolves(mock);
+    // });
+
+    // after(async () => {
+    //   connection.execute.restore();
+    // });
+
+    // it('should return every match', async () => {
+    //   // sinon.stub(connection, "execute").resolves(mock);
+
+    //   const result = await productsModels.searchByTerm('me');
+    //   // const array = [...result];
+    //   console.log(result);
+    //   expect(result).to.have.property('id');
+    //   expect(result.name).to.contain('me');
+    //   // expect(array).to.be.equal(mock);
+    // });
+
+    const mock = [
+      {
+        id: 3,
+        name: "Escudo do Capitão América",
+      },
+    ];
+    before(async () => {      
+      sinon.stub(connection, "execute").resolves(mock);
+    })
+
+    after(() => {      
+      connection.execute.restore();
+    });
+    
+    it('returns a product by the searched term', async () => {
+      const result = await productsModels.searchByTerm('escudo');
+      console.log(result);
+      expect(result).to.be.an('object');
+      expect(result).to.have.property('id');
+      expect(result).to.have.property('name');
     });
   });
 });

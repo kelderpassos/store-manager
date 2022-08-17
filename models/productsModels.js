@@ -37,7 +37,7 @@ const productsModels = {
     const query = 'SELECT * FROM StoreManager.products WHERE name LIKE ?; ';
 
     const [productByTerm] = await connection.execute(query, [`%${term}%`]);
-
+    // console.log(productByTerm);
     return productByTerm;
   },
 };
