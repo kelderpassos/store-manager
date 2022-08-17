@@ -68,13 +68,13 @@ describe("Get and manipulate products from database", () => {
       expect(execution.message).to.equal('Product not found');
     });
 
-    // it('should return a product', async () => {
-    //   sinon.stub(connection, 'execute').resolves(mock);
-    //   const execution = await productsServices.updateProduct(mock.name, 3);
-    //   // console.log(execution);
-    //   expect(execution).to.have.property('name');
-    //   expect(execution).to.be.equal(mock);
-    // });
+    it('should return a product', async () => {
+      sinon.stub(connection, 'execute').resolves(mock);
+      const execution = await productsServices.updateProduct(mock.name, 3);
+      // console.log(execution);
+      expect(execution).to.have.property('name');
+      expect(execution).to.be.equal(mock);
+    });
   });
 
   describe('Delete a product from database', () => {
@@ -95,27 +95,26 @@ describe("Get and manipulate products from database", () => {
     });
   });
 
-  // describe('Find a product by search term', () => {
-  //   beforeEach(async () => {
-  //     sinon.restore();
-  //   });
+  describe('Find a product by search term', () => {
+    beforeEach(async () => {
+      sinon.restore();
+    });
 
-  //   const mock = [
-  //     {
-  //       id: 2,
-  //       name: "Traje de encolhimento",
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "Escudo do Capitão América",
-  //     },
-  //   ];
+    const mock = [
+      {
+        id: 2,
+        name: "Traje de encolhimento",
+      },
+      {
+        id: 3,
+        name: "Escudo do Capitão América",
+      },
+    ];
 
-  //   it('should return products with the searched term', async () => {
-  //     sinon.stub(connection, 'execute').resolves(mock);
-  //     const result = await productsServices.searchByTerm('me');
-  //     // console.log(result);
-  //     expect(result).to.be.equal(mock);
-  //   })
-  // });
+    it('should return products with the searched term', async () => {
+      sinon.stub(connection, 'execute').resolves([mock]);
+      const result = await productsServices.searchByTerm('me');
+      expect(result).to.be.equal(mock);
+    })
+  });
 });

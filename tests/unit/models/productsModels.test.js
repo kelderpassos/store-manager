@@ -95,48 +95,19 @@ describe('Get and manipulate products from database', () => {
   });
 
   describe('Find a product by a search term', () => {
-    // // beforeEach(async () => {
-    // //   sinon.restore();
-    // // });
-
-    // const mock = [
-    //   {
-    //     id: 2,
-    //     name: "Traje de encolhimento",
-    //   },
-    //   {
-    //     id: 3,
-    //     name: "Escudo do Capitão América",
-    //   },
-    // ];
-
-    // before(async () => {
-    //   sinon.stub(connection, "execute").resolves(mock);
-    // });
-
-    // after(async () => {
-    //   connection.execute.restore();
-    // });
-
-    // it('should return every match', async () => {
-    //   // sinon.stub(connection, "execute").resolves(mock);
-
-    //   const result = await productsModels.searchByTerm('me');
-    //   // const array = [...result];
-    //   console.log(result);
-    //   expect(result).to.have.property('id');
-    //   expect(result.name).to.contain('me');
-    //   // expect(array).to.be.equal(mock);
-    // });
-
     const mock = [
+      {
+        id: 2,
+        name: "Traje de encolhimento",
+      },
       {
         id: 3,
         name: "Escudo do Capitão América",
       },
     ];
+
     before(async () => {      
-      sinon.stub(connection, "execute").resolves(mock);
+      sinon.stub(connection, "execute").resolves([mock]);
     })
 
     after(() => {      
@@ -144,11 +115,12 @@ describe('Get and manipulate products from database', () => {
     });
     
     it('returns a product by the searched term', async () => {
-      const result = await productsModels.searchByTerm('escudo');
-      console.log(result);
-      expect(result).to.be.an('object');
-      expect(result).to.have.property('id');
-      expect(result).to.have.property('name');
+      const result = await productsModels.searchByTerm('me');
+      expect(result).to.be.an('array');
+      expect(result[0]).to.have.property('id');
+      expect(result[0]).to.have.property('name');
+      expect(result).to.be.equal(mock);
     });
   });
 });
+
