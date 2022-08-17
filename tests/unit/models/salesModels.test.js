@@ -7,7 +7,7 @@ const salesModels = require("../../../models/salesModels");
 const expect = chai.expect;
 chai.use(chaiAsPromised);
 
-describe('Create new sales', () => {
+describe('Get and manipulate sales from database', () => {
   beforeEach(async () => {
     sinon.restore();
   });
@@ -17,6 +17,12 @@ describe('Create new sales', () => {
       sinon.stub(connection, 'execute').resolves([[]]);
 
       await expect(salesModels.checkIfExists(99)).to.be.rejectedWith("Product not found");
+    });
+  });
+
+  describe('Get every sold product ', () => {
+    it('returns every sold product from database', async () => {
+      sinon.stub(connection, 'execute').resolves()
     });
   });
 

@@ -47,7 +47,6 @@ const salesControllers = {
     const { body } = req;
     
     const updatedSale = await salesServices.updateById(id, body);
-    // console.log(updatedSale);
 
     if (!updatedSale) {
       return res.status(404).json({ message: SALE_NOT_FOUND });
