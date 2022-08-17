@@ -62,10 +62,8 @@ const salesModels = {
     const command = `UPDATE StoreManager.sales_products 
       SET quantity = ? WHERE sale_id = ? AND product_id = ?;`;
 
-    await Promise.all(
-      newInfo.map(async ({ productId, quantity }) =>
-        connection.execute(command, [quantity, saleToBeUpdated, productId])),
-    );
+    await newInfo.map(async ({ quantity, productId }) =>
+      connection.execute(command, [quantity, saleToBeUpdated, productId]));
     
     return { saleId: saleToBeUpdated, itemsUpdated: newInfo };
   },
