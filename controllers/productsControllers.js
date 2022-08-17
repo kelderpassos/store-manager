@@ -51,9 +51,10 @@ const productsControllers = {
   },
 
   searchByTerm: async (req, res) => {
+    console.log(req);
     const { q } = req.query;
     const productByTerm = await productsServices.searchByTerm(q);
-
+    console.log(productByTerm);
     res.status(200).json(productByTerm);
   },
 };

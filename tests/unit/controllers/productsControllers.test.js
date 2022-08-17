@@ -106,18 +106,18 @@ describe('Send the correct responses', () => {
       expect(res.json.calledWith(mock)).to.be.equal(true);
     });
 
-    it("returns an error message", async () => {});
+    // it("returns an error message", async () => {});
   });
 
-  describe('Delete a product from database', () => {
-    it('should return an error message', async () => {
+  // describe('Delete a product from database', () => {
+  //   it('should return an error message', async () => {
 
-    });
+  //   });
 
-    it('should delete a product from database', async () => {
+  //   it('should delete a product from database', async () => {
 
-    });
-  });
+  //   });
+  // });
 
   describe("Search a product by a search term", () => {
     const mock = [
@@ -131,16 +131,15 @@ describe('Send the correct responses', () => {
       },
     ];
 
-    // it("should return every product with the term searched", async () => {
-    //   const req = {};
-    //   const res = {};
-    //   req.query.q = "me";
-    //   res.status = sinon.stub().returns(res);
-    //   res.json = sinon.stub().returns();
-    //   sinon.stub(productsServices, 'searchByTerm').resolves(mock);
+    it("should return every product with the term searched", async () => {
+      const req = { query: { q: 'me' }};
+      const res = {};
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productsServices, 'searchByTerm').resolves(mock);
 
-    //   await productsControllers.updateProduct(req, res);
-    //   expect(res.json.calledWith(mock)).to.be.equal(true);
-    // });
+      await productsControllers.searchByTerm(req, res);
+      expect(res.json.calledWith(mock)).to.be.equal(true);
+    });
   });
 });
