@@ -6,7 +6,7 @@ const productsModels = {
     const [queryResult] = await connection.query(query);
     return queryResult;
   },
-  
+
   findById: async (id) => {
     const query = 'SELECT * FROM StoreManager.products WHERE id=?;';
     const [[queryResult]] = await connection.query(query, [id]);
@@ -31,6 +31,14 @@ const productsModels = {
   deleteById: async (id) => {
     const command = 'DELETE FROM StoreManager.products WHERE id = ?;';
     return connection.execute(command, [id]);
+  },
+
+  searchByTerm: async (term) => {
+    const query = 'SELECT * FROM StoreManager.products WHERE name LIKE ?; ';
+
+    const [productByTerm] = await connection.execute(query, [`%${term}%`]);
+
+    return productByTerm;
   },
 };
 

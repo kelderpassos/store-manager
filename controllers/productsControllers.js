@@ -49,6 +49,14 @@ const productsControllers = {
       
     return res.status(204).json();
   },
+
+  searchByTerm: async (req, res) => {
+    const { q } = req.query;
+    console.log("teste controllers");
+    const productByTerm = await productsServices.searchByTerm(q);
+
+    res.status(200).json(productByTerm);
+  },
 };
 
 module.exports = productsControllers;
