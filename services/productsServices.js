@@ -20,7 +20,7 @@ const productsServices = {
     const productById = await productsModels.findById(id);
 
     if (!productById) {
-      return { message: "Product not found" };
+      return { message: 'Product not found' };
     }
 
     const productUpdated = await productsModels.updateProduct(newInfo, id);
@@ -31,7 +31,7 @@ const productsServices = {
     const productById = await productsModels.findById(id);
 
     if (!productById) {
-      return { message: "Product not found" };
+      return { message: 'Product not found' };
     }
 
     return productsModels.deleteById(id);
