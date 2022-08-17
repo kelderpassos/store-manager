@@ -1,19 +1,10 @@
 const validations = {
-  isProductIdValid: (req, res, next) => {
-    const { body } = req;
-
-    const ids = body.every((sale) => sale.productId);
-
-    if (!ids) {
-      return res.status(400).json({ message: '"productId" is required' });
-    }
-    next();
-  },
-
   isProductQuantityValid: (req, res, next) => {
     const { body } = req;
 
-    const quantityExists = body.every((sale) => typeof sale.quantity === 'undefined');
+    const quantityExists = body.every(
+      (sale) => typeof sale.quantity === "undefined"
+    );
     if (quantityExists) {
       return res.status(400).json({ message: '"quantity" is required' });
     }
@@ -28,14 +19,28 @@ const validations = {
     next();
   },
 
-  // doesSaleExist: (req, res, next) => {
-  //   console.log(res);
-  //   // if (condition) {
-      
-  //   // }
+  // doesProductExist: (req, res, next) => {
+  //   const { body } = req;
+
+  //   const ids = body.every((sale) => sale.productId);
+  //   console.log(ids);
+  //   if (!ids) {
+  //     return res.status(404).json({ message: "Product not found" });
+  //   }
 
   //   next();
   // },
+
+  isProductIdValid: (req, res, next) => {
+    const { body } = req;
+
+    const ids = body.every((sale) => sale.productId);
+
+    if (!ids) {
+      return res.status(400).json({ message: '"productId" is required' });
+    }
+    next();
+  },
 };
 
 module.exports = validations;

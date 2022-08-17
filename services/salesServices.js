@@ -23,9 +23,10 @@ const productsServices = {
     const teste = await salesModels.findById(id);
     return teste;
   },
+
   deleteById: async (id) => {
     const deletedSale = await salesModels.deleteById(id);
-  
+
     if (!deletedSale) {
       return null;
     }
@@ -33,7 +34,26 @@ const productsServices = {
     return deletedSale;
   },
 
-  updateSale: async () => {},
+  updateById: async (saleId, newInfo) => {
+    const everySale = await salesModels.getAll();    
+    const nonExistingId = everySale.filter(({ product_id: productId }) =>
+     Number(saleId) <= productId);
+
+    const existingProducts = newInfo.filter(
+      ({ productId }) => productId > everySale.length,
+    );
+    
+    if (nonExistingId.length === 0) return { errorMessage: 'Sale not found' };
+    if (existingProducts.length > 0) {
+      return { errorMessage: 'Product not found' };
+    }
+    
+    const updatedSale = await salesModels.updateById(saleId, newInfo);
+    
+    if (!updatedSale) return null;
+
+    return updatedSale;
+  },
 };
 
 module.exports = productsServices;

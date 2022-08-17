@@ -8,6 +8,7 @@ const salesModels = {
     VALUES (?, ?, ?);`;
 
     const [{ insertId }] = await connection.execute(queryDate);
+
     await sales.map(async (sale) => {
       await connection.execute(queryProductSale, [
         insertId,
@@ -17,6 +18,13 @@ const salesModels = {
     });
 
     return { id: insertId, itemsSold: sales };
+  },
+
+  getAll: async () => {
+    const query = 'SELECT * FROM StoreManager.sales_products';
+    const [allSales] = await connection.execute(query);
+
+    return allSales;
   },
 
   getEverySale: async () => {
@@ -50,12 +58,23 @@ const salesModels = {
     return !!affectedRows;
   },
 
-  updateSale: async () => {},
+  updateById: async (saleToBeUpdated, newInfo) => {
+    const command = `UPDATE StoreManager.sales_products 
+      SET quantity = ? WHERE sale_id = ? AND product_id = ?;`;
+
+    await Promise.all(
+      newInfo.map(async ({ productId, quantity }) =>
+        connection.execute(command, [quantity, saleToBeUpdated, productId])),
+    );
+    
+    return { saleId: saleToBeUpdated, itemsUpdated: newInfo };
+  },
 
   checkIfExists: async (id) => {
     const saleById = await salesModels.findById(id);
     if (saleById.length === 0) throw new Error('Product not found');
   },
+
 };
 
 module.exports = salesModels;

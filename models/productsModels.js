@@ -6,6 +6,7 @@ const productsModels = {
     const [queryResult] = await connection.query(query);
     return queryResult;
   },
+  
   findById: async (id) => {
     const query = 'SELECT * FROM StoreManager.products WHERE id=?;';
     const [[queryResult]] = await connection.query(query, [id]);

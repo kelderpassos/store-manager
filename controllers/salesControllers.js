@@ -1,5 +1,6 @@
 const salesServices = require('../services/salesServices');
 
+const PRODUCT_NOT_FOUND = 'Product not found';
 const SALE_NOT_FOUND = 'Sale not found';
 
 const salesControllers = {
@@ -41,15 +42,26 @@ const salesControllers = {
     return res.status(204).end();
   },
 
-  updateSale: async (req, res) => {
+  updateById: async (req, res) => {
     const { id } = req.params;
-    // const { body } = req;
-
-    const saleById = await salesServices.findById(id);
+    const { body } = req;
     
-    if (saleById.length === 0) {
+    const updatedSale = await salesServices.updateById(id, body);
+    // console.log(updatedSale);
+
+    if (!updatedSale) {
       return res.status(404).json({ message: SALE_NOT_FOUND });
     }
+
+    if (updatedSale.errorMessage === PRODUCT_NOT_FOUND) {
+      return res.status(404).json({ message: PRODUCT_NOT_FOUND });
+    }
+
+    if (updatedSale.errorMessage === SALE_NOT_FOUND) {
+      return res.status(404).json({ message: SALE_NOT_FOUND });
+    }
+
+    return res.status(200).json(updatedSale);
   },
 };
 
