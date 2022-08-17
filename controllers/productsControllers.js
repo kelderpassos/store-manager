@@ -47,7 +47,7 @@ const productsControllers = {
       return res.status(404).json({ message: PRODUCT_NOT_FOUND });
     }
       
-    return res.status(204).json();
+    return res.status(204).end();
   },
 
   searchByTerm: async (req, res) => {

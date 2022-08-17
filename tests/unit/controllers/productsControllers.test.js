@@ -93,21 +93,54 @@ describe('Send the correct responses', () => {
     const mock = { id: 3, name: 'Fuzil do Capitão América' };
     const errorMessage = { message: 'Product not found' };
 
-    it('returns an error message', async () => {
+    it("returns the product updated with the new info", async () => {
       const req = {};
       const res = {};
-      req.body = { name: 'Fuzil do Capitão América' };
+      req.body = { name: "Fuzil do Capitão América" };
       req.params = 3;
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
-      sinon.stub(productsServices, 'updateProduct').resolves(mock);
+      sinon.stub(productsServices, "updateProduct").resolves(mock);
 
       await productsControllers.updateProduct(req, res);
-      expect(res.json.calledWith(errorMessage)).to.be.equal(true);
+      expect(res.json.calledWith(mock)).to.be.equal(true);
     });
 
-    it('returns the product updated with the new info', async () => {
-      
+    it("returns an error message", async () => {});
+  });
+
+  describe('Delete a product from database', () => {
+    it('should return an error message', async () => {
+
+    });
+
+    it('should delete a product from database', async () => {
+
+    });
+  });
+
+  describe("Search a product by a search term", () => {
+    const mock = [
+      {
+        id: 2,
+        name: "Traje de encolhimento",
+      },
+      {
+        id: 3,
+        name: "Escudo do Capitão América",
+      },
+    ];
+
+    it("should return every product with the term searched", async () => {
+      const req = {};
+      const res = {};
+      req.query.q = "me";
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productsServices, 'searchByTerm').resolves(mock);
+
+      await productsControllers.updateProduct(req, res);
+      expect(res.json.calledWith(mock)).to.be.equal(true);
     });
   });
 });
