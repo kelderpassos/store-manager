@@ -1,6 +1,6 @@
 const salesModels = require('../models/salesModels');
 
-const productsServices = {
+const salesServices = {
   createSales: async (sales) => {
     await Promise.all(
       sales.map(({ productId }) => salesModels.checkIfExists(productId)),
@@ -20,8 +20,8 @@ const productsServices = {
   },
 
   findById: async (id) => {
-    const teste = await salesModels.findById(id);
-    return teste;
+    const saleById = await salesModels.findById(id);
+    return saleById;
   },
 
   deleteById: async (id) => {
@@ -44,6 +44,7 @@ const productsServices = {
     );
     
     if (nonExistingId.length === 0) return { errorMessage: 'Sale not found' };
+    
     if (existingProducts.length > 0) {
       return { errorMessage: 'Product not found' };
     }
@@ -56,4 +57,4 @@ const productsServices = {
   },
 };
 
-module.exports = productsServices;
+module.exports = salesServices;

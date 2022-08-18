@@ -50,7 +50,6 @@ describe('Get and manipulate sales from database', () => {
     it("returns an sale with the an id", async () => {
       sinon.stub(connection, "execute").resolves([ResultSetHeader]);
       const response = await salesModels.createSale(mockNewSale);
-      console.log(response);
       expect(response).to.have.property("id");
       expect(response).to.have.property("itemsSold");
       expect(response.itemsSold).to.be.an('array');
