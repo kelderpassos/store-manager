@@ -4,6 +4,10 @@ const productsControllers = require('../../../controllers/productsControllers');
 const productsServices = require('../../../services/productsServices');
 
 describe('Send the correct responses', () => {
+  const req = {};
+  const res = {};
+  const errorMessage = { message: "Product not found" };
+ 
   beforeEach(async () => {
     sinon.restore();
   });
@@ -18,8 +22,6 @@ describe('Send the correct responses', () => {
     ];
 
     it('returns an array with every product', async () => {
-      const req = {};
-      const res = {};
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
       sinon.stub(productsServices, 'getAll').resolves(mock);
@@ -29,8 +31,6 @@ describe('Send the correct responses', () => {
     });
 
     it('returns the correct response status', async () => {
-      const req = {}
-      const res = {};
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
       sinon.stub(productsServices, 'getAll').resolves(mock);
@@ -44,8 +44,6 @@ describe('Send the correct responses', () => {
     const mock = [[{ id: 1, name: 'Martelo de Thor' }]];
     
     it('returns an object', async () => {
-      const req = {};
-      const res = {};
       req.params = { id: 1 }
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
@@ -57,18 +55,15 @@ describe('Send the correct responses', () => {
     });
 
     it('returns the message: "Product not found"', async () => {
-      const req = {};
-      const res = {};
       req.params = { id: 1 };
       
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
       sinon.stub(productsServices, 'findById').resolves(undefined);
 
-      const response = { message: 'Product not found' }
       await productsControllers.findById(req, res);
 
-      expect(res.json.calledWith(response)).to.be.equal(true);
+      expect(res.json.calledWith(errorMessage)).to.be.equal(true);
     });
 
   });
@@ -77,8 +72,6 @@ describe('Send the correct responses', () => {
     const mock = { id: 1, name: 'Fuzil do Justiceiro' }; 
 
     it('returns the created product with an id', async () => {
-      const req = {};
-      const res = {};
       req.body = { name: 'Fuzil do Justiceiro'};
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
@@ -91,11 +84,8 @@ describe('Send the correct responses', () => {
 
   describe('Update a product with new info coming from the request', () => {
     const mock = { id: 3, name: 'Fuzil do Capitão América' };
-    const errorMessage = { message: 'Product not found' };
 
-    it("returns the product updated with the new info", async () => {
-      const req = {};
-      const res = {};
+    it("returns the product updated with the new info", async () => {      
       req.body = { name: "Fuzil do Capitão América" };
       req.params = 3;
       res.status = sinon.stub().returns(res);
@@ -106,18 +96,51 @@ describe('Send the correct responses', () => {
       expect(res.json.calledWith(mock)).to.be.equal(true);
     });
 
-    // it("returns an error message", async () => {});
+    it("returns an error message", async () => {
+      req.body = { name: "Fuzil do Capitão América" };
+      req.params = 99;
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productsServices, "updateProduct").resolves(errorMessage);
+
+      await productsControllers.updateProduct(req, res);
+      expect(res.json.calledWith(errorMessage)).to.be.equal(true);
+    });
   });
 
-  // describe('Delete a product from database', () => {
-  //   it('should return an error message', async () => {
+  describe('Delete a product from database', () => {
+    it('should return an error message', async () => {
+      req.params = 99;
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
 
-  //   });
+      sinon.stub(productsServices, "deleteById").resolves(errorMessage);
+      
+      await productsControllers.deleteById(req, res);
+      expect(res.json.calledWith(errorMessage)).to.be.equal(true);
+    });
 
-  //   it('should delete a product from database', async () => {
+    it('should delete a product from database', async () => {
+      const ResultSetHeader = {
+        fieldCount: 0,
+        affectedRows: 1,
+        insertId: 0,
+        info: '',
+        serverStatus: 2,
+        warningStatus: 0
+      }
 
-  //   });
-  // });
+      const productDeleted = ResultSetHeader.affectedRows;      
+      req.params = 99;
+      res.status = sinon.stub().returns(res);
+      res.end = sinon.stub().returns();
+
+      sinon.stub(productsServices, "deleteById").resolves([productDeleted]);
+
+      await productsControllers.deleteById(req, res);
+      expect(res.end.calledWith()).to.be.equal(true);
+    });
+  });
 
   describe("Search a product by a search term", () => {
     const mock = [

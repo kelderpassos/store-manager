@@ -20,13 +20,6 @@ const salesModels = {
     return { id: insertId, itemsSold: sales };
   },
 
-  getAll: async () => {
-    const query = 'SELECT * FROM StoreManager.sales_products';
-    const [allSales] = await connection.execute(query);
-
-    return allSales;
-  },
-
   getEverySale: async () => {
     const query = `SELECT s.id AS saleId, s.date AS date,
     sp.product_id AS productId, sp.quantity AS quantity 
@@ -47,6 +40,7 @@ const salesModels = {
     WHERE sp.sale_id = ?`;
 
     const [saleById] = await connection.execute(query, [id]);
+    console.log(saleById);
     return saleById;
   },
 
@@ -54,7 +48,7 @@ const salesModels = {
     const commandSales = 'DELETE FROM StoreManager.sales WHERE id = ?;';
 
     const [{ affectedRows }] = await connection.execute(commandSales, [id]);
-
+    console.log(affectedRows);
     return !!affectedRows;
   },
 

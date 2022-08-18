@@ -35,6 +35,7 @@ const productsControllers = {
     if (productUpdated.message === PRODUCT_NOT_FOUND) {
       return res.status(404).json({ message: PRODUCT_NOT_FOUND });
     }
+    
     return res.status(200).json(productUpdated);
   },
 
@@ -42,7 +43,7 @@ const productsControllers = {
     const { id } = req.params;
 
     const isDeleted = await productsServices.deleteById(id);
-    
+
     if (isDeleted.message === PRODUCT_NOT_FOUND) {
       return res.status(404).json({ message: PRODUCT_NOT_FOUND });
     }

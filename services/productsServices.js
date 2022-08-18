@@ -33,7 +33,6 @@ const productsServices = {
     if (!productById) {
       return { message: 'Product not found' };
     }
-
     return productsModels.deleteById(id);
   },
 

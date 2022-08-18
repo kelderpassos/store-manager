@@ -88,7 +88,7 @@ describe("Get and manipulate products from database", () => {
     });
 
     it('should delete a product from database', async () => {
-      sinon.stub(connection, 'execute').resolves();
+      sinon.stub(connection, 'execute').resolves(undefined);
       const result = await productsServices.deleteById(3);
       expect(result).to.be.equal(undefined);
     });
