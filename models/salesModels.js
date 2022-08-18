@@ -8,7 +8,7 @@ const salesModels = {
     VALUES (?, ?, ?);`;
 
     const [{ insertId }] = await connection.execute(queryDate);
-
+    
     await sales.map(async (sale) => {
       await connection.execute(queryProductSale, [
         insertId,
@@ -40,7 +40,6 @@ const salesModels = {
     WHERE sp.sale_id = ?`;
 
     const [saleById] = await connection.execute(query, [id]);
-    console.log(saleById);
     return saleById;
   },
 
@@ -48,7 +47,6 @@ const salesModels = {
     const commandSales = 'DELETE FROM StoreManager.sales WHERE id = ?;';
 
     const [{ affectedRows }] = await connection.execute(commandSales, [id]);
-    console.log(affectedRows);
     return !!affectedRows;
   },
 

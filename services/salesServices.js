@@ -36,7 +36,6 @@ const productsServices = {
 
   updateById: async (saleId, newInfo) => {
     const everySale = await salesModels.getEverySale();  
-    console.log(everySale);
     const nonExistingId = everySale.filter(({ productId }) =>
      Number(saleId) <= productId);
 
