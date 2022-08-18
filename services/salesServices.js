@@ -6,8 +6,8 @@ const productsServices = {
       sales.map(({ productId }) => salesModels.checkIfExists(productId)),
     );
 
-    const newProduct = await salesModels.createSale(sales);
-    return newProduct;
+    const createdSales = await salesModels.createSale(sales);
+    return createdSales;
   },
 
   getEverySale: async () => {
