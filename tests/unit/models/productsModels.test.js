@@ -66,7 +66,7 @@ describe('Get and manipulate products from database', () => {
     const update = { id: 1, name: 'Fuzil do Justiceiro' };
 
     before(async () => {
-      sinon.stub(connection, "execute").resolves();
+      sinon.stub(connection, "execute").resolves([]);
     });
 
     after(async () => {

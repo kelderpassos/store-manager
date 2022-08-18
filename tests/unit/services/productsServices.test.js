@@ -2,6 +2,7 @@ const sinon = require("sinon");
 const { expect } = require("chai");
 const connection = require("../../../models/connection");
 const productsServices = require('../../../services/productsServices');
+const productsModels = require("../../../models/productsModels");
 
 describe("Get and manipulate products from database", () => {
   describe("Get every product from database", () => {
@@ -62,14 +63,15 @@ describe("Get and manipulate products from database", () => {
     const mock = { id: 3, name: "Fuzil do Capitão América" };
 
     it('should return an error message', async () => {
-      sinon.stub(connection, 'execute').resolves();
+      sinon.stub(productsModels, 'findById').resolves(undefined);
       const execution = await productsServices.updateProduct('Fuzil', 999);
       expect(execution).to.have.property('message');
       expect(execution.message).to.equal('Product not found');
     });
 
     it('should return a product', async () => {
-      sinon.stub(connection, 'execute').resolves(mock);
+      sinon.stub(productsModels, "findById").resolves(mock);
+      sinon.stub(productsModels, 'updateProduct').resolves(mock)
       const execution = await productsServices.updateProduct(mock.name, 3);
       expect(execution).to.have.property('name');
       expect(execution).to.be.eql(mock);
@@ -82,15 +84,16 @@ describe("Get and manipulate products from database", () => {
     });
 
     it('should return an error message', async () => {
-      sinon.stub(connection, 'execute').resolves();
+      sinon.stub(productsModels, "findById").resolves(undefined);
       const result = await productsServices.deleteById(999);
       expect(result.message).to.be.equal('Product not found');
     });
 
     it('should delete a product from database', async () => {
-      sinon.stub(connection, 'execute').resolves(undefined);
+      sinon.stub(productsModels, "findById").resolves([]);
+      sinon.stub(productsModels, 'deleteById').resolves([]);
       const result = await productsServices.deleteById(3);
-      expect(result).to.be.equal(undefined);
+      expect(result).to.be.eql([]);
     });
   });
 
