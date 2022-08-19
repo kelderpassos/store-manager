@@ -195,7 +195,4 @@ describe('Get and manipulate sales from database', () => {
         .to.be.rejectedWith("Product not found");
     });
   });
-
-  
-
 });

@@ -2,18 +2,47 @@ const sinon = require("sinon");
 const { expect } = require("chai");
 const salesModels = require("../../../models/salesModels");
 const salesServices = require("../../../services/salesServices");
-const { deleteById } = require("../../../models/salesModels");
 
 describe('Get and manipulate products from database', () => {
   beforeEach(async () => {
     sinon.restore();
   });
 
-  // describe('Return the new product', async () => {
-  //   it('returns the new sales', async () => {
-  //     sinon.stub(salesModels, 'checkIfExists').
-  //   });
-  // });
+  describe('Return the new product', async () => {
+    const mockBody = [
+    {
+      "productId": 1,
+      "quantity":1
+    },
+    {
+      "productId": 2,
+      "quantity":5
+    }
+    ]
+    
+    const mockResponse = {
+      id: 3,
+      itemsSold: [
+        {
+          productId: 1,
+          quantity: 1,
+        },
+        {
+          productId: 2,
+          quantity: 5,
+        },
+      ],
+    };
+
+    it('returns the new sales', async () => {
+      sinon.stub(salesModels, 'checkIfExists').resolves(true);
+      sinon.stub(salesModels, 'createSale').resolves(mockResponse);
+      
+      const response = await salesServices.createSales(mockBody);
+      expect(response).to.have.keys('id', 'itemsSold');
+      expect(response).to.be.equal(mockResponse);
+    });
+  });
 
   describe('Get every sale from database', () => {
     const mock = [
@@ -84,7 +113,7 @@ describe('Get and manipulate products from database', () => {
   });
 
   describe("Update a sale in the database", () => {
-    const mock = [
+    const mockBody = [
       {
         productId: 1,
         quantity: 100,
@@ -95,9 +124,30 @@ describe('Get and manipulate products from database', () => {
       },
     ];
 
+    const mockResponse = [
+      {
+        saleId: 1,
+        date: "2022-08-18T22:14:57.000Z",
+        productId: 1,
+        quantity: 5,
+      },
+      {
+        saleId: 1,
+        date: "2022-08-18T22:14:57.000Z",
+        productId: 2,
+        quantity: 10,
+      },
+      {
+        saleId: 2,
+        date: "2022-08-18T22:14:57.000Z",
+        productId: 3,
+        quantity: 15,
+      },
+    ];
+
     it(`should return 'Sale not found'`, async () => {
-      sinon.stub(salesModels, "getEverySale").resolves([]);
-      const response = await salesServices.updateById(1, mock);
+      sinon.stub(salesModels, "getEverySale").resolves(mockResponse);
+      const response = await salesServices.updateById(1, mockBody);
       expect(response).to.have.key("errorMessage");
       expect(response.errorMessage).to.be.equal("Sale not found");
     });
@@ -107,7 +157,10 @@ describe('Get and manipulate products from database', () => {
     });
 
     it(`should return null if the update doesn't happen`, async () => {
-
+      sinon.stub(salesModels, 'getEverySale').resolves([]);
+      sinon.stub(salesModels, 'updateById').resolves(undefined)
+      const response = await salesServices.updateById(99, mockBody);
+      expect(response).to.be.null;
     });
   });
 });
