@@ -27,7 +27,6 @@ const salesModels = {
     WHERE s.id = sp.sale_id `;
 
     const [allProducts] = await connection.execute(query);
-    if (allProducts === undefined) return null;
 
     return allProducts;
   },

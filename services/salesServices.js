@@ -35,7 +35,7 @@ const salesServices = {
   },
 
   updateById: async (saleId, newInfo) => {
-    const everySale = await salesModels.getEverySale();  
+    const everySale = await salesModels.getEverySale();
     const nonExistingId = everySale.filter(({ productId }) =>
      Number(saleId) <= productId);
 
@@ -50,9 +50,6 @@ const salesServices = {
     }
     
     const updatedSale = await salesModels.updateById(saleId, newInfo);
-    
-    if (!updatedSale) return null;
-
     return updatedSale;
   },
 };

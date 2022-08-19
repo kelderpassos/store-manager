@@ -124,6 +124,17 @@ describe('Get and manipulate products from database', () => {
       },
     ];
 
+    const invalidMockBody = [
+      {
+        productId: 111,
+        quantity: 100,
+      },
+      {
+        productId: 2,
+        quantity: 500,
+      },
+    ];
+
     const mockResponse = [
       {
         saleId: 1,
@@ -145,22 +156,42 @@ describe('Get and manipulate products from database', () => {
       },
     ];
 
+    const mockUpdatedResponse = {
+      saleId: "1",
+      itemsUpdated: [
+        {
+          productId: 1,
+          quantity: 100,
+        },
+        {
+          productId: 2,
+          quantity: 500,
+        },
+      ],
+    };
+
     it(`should return 'Sale not found'`, async () => {
-      sinon.stub(salesModels, "getEverySale").resolves(mockResponse);
+      sinon.stub(salesModels, "getEverySale").resolves([]);
       const response = await salesServices.updateById(1, mockBody);
-      expect(response).to.have.key("errorMessage");
+      expect(response).to.have.property("errorMessage");
       expect(response.errorMessage).to.be.equal("Sale not found");
     });
 
     it(`should return 'Product not found'`, async () => {
-
+      sinon.stub(salesModels, "getEverySale").resolves(mockResponse);
+      const response = await salesServices.updateById(1, invalidMockBody);
+      expect(response).to.have.property('errorMessage');
     });
 
-    it(`should return null if the update doesn't happen`, async () => {
-      sinon.stub(salesModels, 'getEverySale').resolves([]);
-      sinon.stub(salesModels, 'updateById').resolves(undefined)
-      const response = await salesServices.updateById(99, mockBody);
-      expect(response).to.be.null;
+    it(`should return the updated sale`, async () => {
+      sinon.stub(salesModels, 'getEverySale').resolves(mockResponse);
+      sinon.stub(salesModels, "updateById").resolves(mockUpdatedResponse);
+      const response = await salesServices.updateById(1, mockBody);
+      
+      expect(response).to.have.keys('saleId', 'itemsUpdated');
+      expect(response.itemsUpdated).to.be.an("array");
+      expect(response.itemsUpdated.length).to.be.above(0);
+      expect(response).to.be.equal(mockUpdatedResponse);
     });
   });
 });
