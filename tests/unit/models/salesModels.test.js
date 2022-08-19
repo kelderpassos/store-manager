@@ -193,6 +193,7 @@ describe('Get and manipulate sales from database', () => {
 
       await expect(salesModels.checkIfExists(99))
         .to.be.rejectedWith("Product not found");
+      await expect(salesModels.checkIfExists(3)).to.be.equal(true);
     });
   });
 });

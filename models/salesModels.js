@@ -62,6 +62,7 @@ const salesModels = {
   checkIfExists: async (id) => {
     const saleById = await salesModels.findById(id);
     if (saleById.length === 0) throw new Error('Product not found');
+    return true;
   },
 
 };
