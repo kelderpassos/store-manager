@@ -188,12 +188,19 @@ describe('Get and manipulate sales from database', () => {
   });
 
   describe("Check if an id exists", () => {
+    const mock = [{ date: '2022-08-19T14:00:51.000Z', productId: 3, quantity: 15 }];
+
     it("should return an empty array", async () => {
       sinon.stub(connection, "execute").resolves([[]]);
 
       await expect(salesModels.checkIfExists(99))
         .to.be.rejectedWith("Product not found");
-      await expect(salesModels.checkIfExists(3)).to.be.equal(true);
+    });
+
+    it(`should return 'true' if the ids exist`, async () => {
+      sinon.stub(connection, "execute").resolves(mock);
+      const response = await salesModels.checkIfExists(3);
+      expect(response).to.be.true;
     });
   });
 });

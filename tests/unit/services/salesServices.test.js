@@ -187,10 +187,9 @@ describe('Get and manipulate products from database', () => {
       sinon.stub(salesModels, 'getEverySale').resolves(mockResponse);
       sinon.stub(salesModels, "updateById").resolves(mockUpdatedResponse);
       const response = await salesServices.updateById(1, mockBody);
-      
+
       expect(response).to.have.keys('saleId', 'itemsUpdated');
-      expect(response.itemsUpdated).to.be.an("array");
-      expect(response.itemsUpdated.length).to.be.above(0);
+      expect(response.itemsUpdated).to.be.an("array").that.is.not.empty;
       expect(response).to.be.equal(mockUpdatedResponse);
     });
   });

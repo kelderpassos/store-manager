@@ -14,7 +14,7 @@ const salesControllers = {
   getEverySale: async (_req, res) => {
     const everySale = await salesServices.getEverySale();
 
-    if (!everySale) {
+    if (everySale.code) {
       return res.status(everySale.code).json(everySale.message);
     }
 

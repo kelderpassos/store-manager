@@ -50,8 +50,62 @@ describe('Test every function from salesControllers', () => {
       sinon.stub(salesServices, 'getEverySale').resolves(mock);
       await salesControllers.getEverySale(req, res);
       expect(res.status.calledWith(200)).to.be.equal(true);
-      expect(res.status.calledWith(mock)).to.be.equal(true);
+      expect(res.json.calledWith(mock)).to.be.equal(true);
     });
   });
+
+  describe('Get products by an specific id', () => {
+    const mockById = [
+      {
+        date: "2022-08-18T14:56:32.000Z",
+        productId: 3,
+        quantity: 15,
+      },
+    ];
+
+    it(`returns an error message`, async () => {
+      req.params = { id: 99 };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(salesServices, "findById").resolves([]);
+
+      await salesControllers.findById(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+
+    it('returns a sale by its id', async () => {
+      req.params = { id: 2 };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(salesServices, 'findById').resolves(mockById);
+
+      await salesControllers.findById(req, res);
+      expect(res.status.calledWith(200)).to.be.true;
+      expect(res.json.calledWith(mockById)).to.be.equal(true);
+    });
+  });
+
+  describe("Delete products from database", () => {
+    it(`returns an error message`, async () => {
+      req.params = { id: 99 };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(salesServices, 'deleteById').resolves(false);
+
+      await salesControllers.deleteById(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
+      expect(res.json.calledWith({ message: SALE_NOT_FOUND })).to.be.true;
+    });
+
+    it("", async () => { });
+    
+  });
+
+  // describe("", () => {
+  //   it("", async () => { });
+  //   it("", async () => { });
+  //   it("", async () => { });
+  //   it("", async () => {});
+  // });
 
 });
