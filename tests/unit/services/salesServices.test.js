@@ -172,7 +172,7 @@ describe('Get and manipulate products from database', () => {
 
     it(`should return 'Sale not found'`, async () => {
       sinon.stub(salesModels, "getEverySale").resolves([]);
-      const response = await salesServices.updateById(1, mockBody);
+      const response = await salesServices.updateById(111, mockBody);
       expect(response).to.have.property("errorMessage");
       expect(response.errorMessage).to.be.equal("Sale not found");
     });

@@ -3,7 +3,7 @@ const { expect } = require("chai");
 const salesServices = require("../../../services/salesServices");
 const salesControllers = require("../../../controllers/salesControllers");
 
-describe('Test every function from salesControllers', () => {
+describe("Test every function from salesControllers", () => {
   const req = {};
   const res = {};
   const PRODUCT_NOT_FOUND = "Product not found";
@@ -11,10 +11,45 @@ describe('Test every function from salesControllers', () => {
 
   beforeEach(() => {
     sinon.restore();
-  })
+  });
 
-  describe('Get every product from database', () => {
-    it('returns an error message', async () => {
+  describe('Create a new sale', () => {
+    const existentProduct = [
+      {
+        productId: 1,
+        quantity: 100,
+      },
+      {
+        productId: 2,
+        quantity: 500,
+      },
+    ];
+
+    const newSale = [
+      {
+        productId: 1,
+        quantity: 1,
+      },
+      {
+        productId: 2,
+        quantity: 5,
+      },
+    ];
+
+    it('returns the created sale', async () => {
+      req.body = existentProduct;
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(salesServices, 'createSales').resolves(newSale);
+
+      await salesControllers.createSale(req, res);
+      expect(res.status.calledWith(201)).to.be.true;
+      expect(res.json.calledWith(newSale)).to.be.true;
+    });
+  });
+
+  describe("Get every sale from database", () => {
+    it("returns an error message", async () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
       sinon
@@ -24,7 +59,7 @@ describe('Test every function from salesControllers', () => {
       expect(res.status.calledWith(404)).to.be.equal(true);
     });
 
-    it('returns every sale from database', async () => {
+    it("returns every sale from database", async () => {
       const mock = [
         {
           saleId: 1,
@@ -47,14 +82,14 @@ describe('Test every function from salesControllers', () => {
       ];
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
-      sinon.stub(salesServices, 'getEverySale').resolves(mock);
+      sinon.stub(salesServices, "getEverySale").resolves(mock);
       await salesControllers.getEverySale(req, res);
       expect(res.status.calledWith(200)).to.be.equal(true);
       expect(res.json.calledWith(mock)).to.be.equal(true);
     });
   });
 
-  describe('Get products by an specific id', () => {
+  describe("Get sales by an specific id", () => {
     const mockById = [
       {
         date: "2022-08-18T14:56:32.000Z",
@@ -73,11 +108,11 @@ describe('Test every function from salesControllers', () => {
       expect(res.status.calledWith(404)).to.be.true;
     });
 
-    it('returns a sale by its id', async () => {
+    it("returns a sale by its id", async () => {
       req.params = { id: 2 };
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
-      sinon.stub(salesServices, 'findById').resolves(mockById);
+      sinon.stub(salesServices, "findById").resolves(mockById);
 
       await salesControllers.findById(req, res);
       expect(res.status.calledWith(200)).to.be.true;
@@ -85,27 +120,97 @@ describe('Test every function from salesControllers', () => {
     });
   });
 
-  describe("Delete products from database", () => {
+  describe("Delete sales from database", () => {
     it(`returns an error message`, async () => {
       req.params = { id: 99 };
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
-      sinon.stub(salesServices, 'deleteById').resolves(false);
+      sinon.stub(salesServices, "deleteById").resolves(false);
 
       await salesControllers.deleteById(req, res);
       expect(res.status.calledWith(404)).to.be.true;
       expect(res.json.calledWith({ message: SALE_NOT_FOUND })).to.be.true;
     });
 
-    it("", async () => { });
-    
+    it("deletes the sale", async () => {
+      req.params = { id: 1 };
+      res.status = sinon.stub().returns(res);
+      res.end = sinon.stub().returns();
+      sinon.stub(salesServices, "deleteById").resolves(true);
+
+      await salesControllers.deleteById(req, res);
+      expect(res.status.calledWith(204)).to.be.true;
+      expect(res.end.calledWith()).to.be.true;
+    });
   });
 
-  // describe("", () => {
-  //   it("", async () => { });
-  //   it("", async () => { });
-  //   it("", async () => { });
-  //   it("", async () => {});
-  // });
+  describe("Update a sale by its id ", () => {
+    const existentProduct = [
+      {
+        productId: 1,
+        quantity: 100,
+      },
+      {
+        productId: 2,
+        quantity: 500,
+      },
+    ];
 
+    const unexistentProduct = [
+      {
+        productId: 111,
+        quantity: 100,
+      },
+      {
+        productId: 222,
+        quantity: 500,
+      },
+    ];
+
+    const updatedSale = {
+      saleId: "1",
+      itemsUpdated: [
+        { productId: 1, quantity: 100 },
+        { productId: 2, quantity: 500 },
+      ],
+    };
+
+    it(`returns the error message ${SALE_NOT_FOUND}`, async () => {
+      req.params = { id: 99 };
+      req.body = existentProduct;
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesServices, "updateById")
+        .resolves({ errorMessage: SALE_NOT_FOUND });
+
+      await salesControllers.updateById(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
+      expect(res.json.calledWith({ message: SALE_NOT_FOUND })).to.be.true;
+    });
+
+    it(`returns the error message ${PRODUCT_NOT_FOUND}`, async () => {
+      req.params = { id: 1 };
+      req.body = unexistentProduct;
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(salesServices, "updateById").resolves({ errorMessage: PRODUCT_NOT_FOUND });
+      
+      await salesControllers.updateById(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
+      expect(res.json.calledWith({ message: PRODUCT_NOT_FOUND })).to.be.true;
+    });
+
+    it("returns the updated product", async () => {
+      req.params = { id: 1 };
+      req.body = existentProduct;
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(salesServices, 'updateById').resolves(updatedSale);
+
+      await salesControllers.updateById(req, res);
+      expect(res.status.calledWith(200)).to.be.true;
+      expect(res.json.calledWith(updatedSale)).to.be.true;
+    });
+  });
 });
