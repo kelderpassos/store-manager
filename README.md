@@ -12,6 +12,11 @@ Construir uma API para gerenciar o banco de dados de estoque e vendas de um com�
 - tem operações sem estado;
 - faz uso de um sistema em três camadas distintas camadas seguindo o padrão Model-Service-Controller.
 
+## Desafios
+- Desenvolver uma api CRUD pela primeira vez;
+- Construir a aplicação com uma arquitetura em camadas (Model, Service, Controller);
+- Desenvolver testes que cobrissem 100% do código;
+
 ## Observações
 
 Essa aplicação não usa recursos armazenáveis em cache, então ainda não é uma api do tipo RESTful. <br />
@@ -94,6 +99,11 @@ To build an API to manage the database of an online store's stock and sales that
 - has stateless operations;
 - makes use of three different layers following the Model-Service-Control standard .
   <br />
+
+## Challenges
+- Develop a CRUD api for the first time;
+- Build an application with an architecture in layers (Model, Service, Controller);
+- Develop tests covering 100% of the code;
 
 ## Observations
 
